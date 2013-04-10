@@ -20,7 +20,7 @@ Or install it yourself as:
 ## Usage
 ### Global information
 
-See [Goole Maps Geocoding service documentation](https://developers.google.com/maps/documentation/geocoding/) for options parameters and *result* handling.
+See [Google Maps Geocoding service documentation](https://developers.google.com/maps/documentation/geocoding/) for options parameters and *result* handling.
 
 ### JSON example
 
