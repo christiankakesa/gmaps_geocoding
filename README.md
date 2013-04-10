@@ -29,7 +29,7 @@ See [Google Maps Geocoding service documentation](https://developers.google.com/
     api = GmapsGeocoding::Api.new(opts)
     result = api.get_location
 
-**json output**
+**Ruby Hash object from json output**
 
         {"results"=>
           [{"address_components"=>
@@ -123,7 +123,7 @@ See [Google Maps Geocoding service documentation](https://developers.google.com/
     api = GmapsGeocoding::Api.new(opts)
     result = api.get_location
 
-**xml output**
+**Ruby Hash object from xml output**
 
         {"status"=>"OK",
         "result"=>
