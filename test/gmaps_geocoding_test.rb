@@ -35,7 +35,6 @@ class GmapsGeocodingTest < Test::Unit::TestCase
     opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'json'}
     api = GmapsGeocoding::Api.new(opts)
     result = api.get_location
-    # print result.pretty_inspect
     assert_not_nil api
     assert_not_nil result
     assert_equal 4, api.config.options.length
@@ -45,7 +44,6 @@ class GmapsGeocodingTest < Test::Unit::TestCase
     opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'xml'}
     api = GmapsGeocoding::Api.new(opts)
     result = api.get_location
-    print result.pretty_inspect
     assert_not_nil api
     assert_not_nil result
     assert_equal 4, api.config.options.length
