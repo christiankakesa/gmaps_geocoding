@@ -55,14 +55,14 @@ module GmapsGeocoding
 
     def valid?
       return is_query_valid? &&
-          is_output_valid?
+          is_output_param_valid?
     end
 
-    def is_output_json?
+    def is_json_format?
       'json'.eql?(output)
     end
 
-    def is_output_xml?
+    def is_xml_format?
       'xml'.eql?(output)
     end
 
@@ -72,7 +72,7 @@ module GmapsGeocoding
           (@options[:address].to_s.length == 0 && @options[:latlng].to_s.length > 0)
     end
 
-    def is_output_valid?
+    def is_output_param_valid?
       ['json', 'xml'].include?(output)
     end
   end

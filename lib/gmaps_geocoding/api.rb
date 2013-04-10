@@ -17,7 +17,7 @@ module GmapsGeocoding
       begin
         if @config.valid?
           rest_client = retrieve_geocoding_data
-          result = case @config.is_output_json?
+          result = case @config.is_json_format?
                      when true
                        GmapsGeocoding.from_json(rest_client.to_s)
                      else
