@@ -18,6 +18,10 @@ Or install it yourself as:
     $ gem install gmaps_geocoding
 
 ## Usage
+### Global information
+
+See [Goole Maps Geocoding service documentation](https://developers.google.com/maps/documentation/geocoding/) for options parameters and *result* handling.
+
 ### JSON example
 
     # json output example
