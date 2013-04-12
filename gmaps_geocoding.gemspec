@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
     This gem return a Ruby Hash object of the result.
   }
   s.summary       = %q{Use Google Geocoding API from Ruby.}
-  s.homepage      = ''
+  s.homepage      = 'https://github.com/fenicks/gmaps_geocoding'
   s.license       = 'MIT'
 
   s.files         = `git ls-files`.split($/)
