@@ -22,6 +22,16 @@ Or install it yourself as:
 
 See [Google Maps Geocoding service documentation](https://developers.google.com/maps/documentation/geocoding/) for options parameters and *result* handling.
 
+All options could be overriden with corresponding environment variable:
+* GOOGLE_MAPS_GEOCODING_OUTPUT
+* GOOGLE_MAPS_GEOCODING_ADDRESS
+* GOOGLE_MAPS_GEOCODING_LATLNG
+* GOOGLE_MAPS_GEOCODING_COMPONENTS
+* GOOGLE_MAPS_GEOCODING_SENSOR
+* GOOGLE_MAPS_GEOCODING_BOUNDS
+* GOOGLE_MAPS_GEOCODING_LANGUAGE
+* GOOGLE_MAPS_GEOCODING_REGION
+
 ### JSON example
 
     # json output example
