@@ -12,14 +12,14 @@ task :build do
 end
 
 task install: :build do
-  system "gem install gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
+  system "gem install pkg/gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
 end
 
 task release: :build do
   system "git tag -a -v#{GmapsGeocoding::VERSION} -m 'Tagging #{GmapsGeocoding::VERSION}'"
   system 'git push --tags'
-  system "gem push gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
-  system "rm gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
+  system "gem push pkg/gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
+  system "rm pkg/gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
 end
 
 Rake::TestTask.new do |t|
