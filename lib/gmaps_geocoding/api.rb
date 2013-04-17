@@ -28,8 +28,8 @@ module GmapsGeocoding
         end
       rescue => e
         puts "[error: gmaps_geocoding]: #{e}"
-        nil
       end
+      nil
     end
 
     def build_url_query
