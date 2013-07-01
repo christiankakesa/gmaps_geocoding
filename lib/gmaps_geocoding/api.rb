@@ -12,6 +12,16 @@ module GmapsGeocoding
       get_gmaps_data
     end
 
+    def get_finest_latlng
+      data = get_gmaps_data
+      if !data.nil? && (data.include?('results') || data.include?('result'))
+        result = data['results']||data['result']
+        get_best_location_from_gmaps(result)
+      else
+        nil
+      end
+    end
+
     private
     def get_gmaps_data
       begin
@@ -21,7 +31,6 @@ module GmapsGeocoding
                      when true
                        GmapsGeocoding.from_json(rest_client.to_s)
                      else
-                       # Xml parser
                        GmapsGeocoding.from_xml(rest_client.to_s)
                    end
           return result
@@ -30,6 +39,31 @@ module GmapsGeocoding
         puts "[error: gmaps_geocoding]: #{e}"
       end
       nil
+    end
+
+    # Get the best location for an address based on Goole Maps Geocoder "location_type"
+    #
+    # location_type stores additional data about the specified location. The following values are currently supported:
+    #   google.maps.GeocoderLocationType.ROOFTOP            indicates that the returned result reflects a precise geocode.
+    #   google.maps.GeocoderLocationType.RANGE_INTERPOLATED indicates that the returned result reflects an approximation (usually on a road) interpolated between two precise points (such as intersections). Interpolated results are generally returned when rooftop geocodes are unavailable for a street address.
+    #   google.maps.GeocoderLocationType.GEOMETRIC_CENTER   indicates that the returned result is the geometric center of a result such as a polyline (for example, a street) or polygon (region).
+    #   google.maps.GeocoderLocationType.APPROXIMATE        indicates that the returned result is approximate.
+    #
+    def get_best_location_from_gmaps(data)
+      result = {}
+      data.each do |d|
+        result["#{d['geometry']['location_type']}"] = {lng: d['geometry']['location']['lng'].to_f,
+                                                       lat: d['geometry']['location']['lat'].to_f}
+      end
+      if result.include?('ROOFTOP')
+        [result['ROOFTOP'][:lng], result['ROOFTOP'][:lat]]
+      elsif result.include?('RANGE_INTERPOLATED')
+        [result['RANGE_INTERPOLATED'][:lng], result['RANGE_INTERPOLATED'][:lat]]
+      elsif result.include?('GEOMETRIC_CENTER')
+        [result['GEOMETRIC_CENTER'][:lng], result['GEOMETRIC_CENTER'][:lat]]
+      else
+        [result['APPROXIMATE'][:lng], result['APPROXIMATE'][:lat]]
+      end
     end
 
     def build_url_query
@@ -47,24 +81,25 @@ module GmapsGeocoding
 
     def retrieve_geocoding_data
       require 'rest-client'
-      data = build_url_query
+      data = build_url_query()
       RestClient.get data[:url], params: data[:query]
     end
   end
 
-  def self.from_json(json)
-    require 'yajl/json_gem'
-    Yajl::Parser.parse(json)
-  end
-
-  def self.from_xml(xml)
-    require 'nori'
-    n = Nori.new(parser: :nokogiri).parse(xml)
-    if n.include?('GeocodeResponse')
-      n = n['GeocodeResponse']
-    else
-      n = {'status' => 'UNKNOWN_ERROR'}
+  class << self
+    def from_json(json)
+      require 'yajl/json_gem'
+      Yajl::Parser.parse(json)
     end
-    n
+
+    def from_xml(xml)
+      require 'nori'
+      result = Nori.new(parser: :nokogiri).parse(xml)
+      if result.include?('GeocodeResponse')
+        result['GeocodeResponse']
+      else
+        {status: 'UNKNOWN_ERROR'}
+      end
+    end
   end
 end
