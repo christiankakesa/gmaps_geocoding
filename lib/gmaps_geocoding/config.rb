@@ -90,8 +90,7 @@ module GmapsGeocoding
     #
     # @return [true, false] Return _true_ or _false_
     def valid?
-      return is_query_valid? &&
-          is_output_param_valid?
+      is_query_valid? && is_output_param_valid?
     end
 
     # Check if the output format of the query is set to _json_

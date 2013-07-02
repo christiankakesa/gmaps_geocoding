@@ -1,5 +1,6 @@
 # encoding: utf-8
 require 'test/unit'
+require_relative 'test_helper'
 require 'gmaps_geocoding'
 
 class GmapsGeocodingTest < Test::Unit::TestCase
