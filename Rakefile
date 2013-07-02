@@ -1,6 +1,7 @@
 # encoding: utf-8
 require 'bundler/gem_tasks'
 require 'rake/testtask'
+require 'yard'
 
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
@@ -24,8 +25,14 @@ end
 
 Rake::TestTask.new do |t|
   t.libs << 'lib/gmaps_geocoding'
-  t.test_files = FileList['test/*_test.rb']
+  t.test_files = FileList['test/**/*_test.rb']
   t.verbose = true
+end
+
+desc 'Generate documentation'
+YARD::Rake::YardocTask.new do |t|
+  t.files   = ['lib/**/*.rb', '-', 'LICENSE.txt']
+  t.options = ['--main', 'README.md', '--no-private']
 end
 
 task default: :test
