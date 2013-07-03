@@ -3,8 +3,6 @@
 module GmapsGeocoding
   # Configuration class for GmapsGeocoding API.
   class Config
-    attr_reader :options
-
     def initialize(opts = {})
       @options = {url: 'https://maps.googleapis.com/maps/api/geocode'}
       @options[:output]     = ENV['GOOGLE_MAPS_GEOCODING_OUTPUT']     || opts[:output]     || 'json'
