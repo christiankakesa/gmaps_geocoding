@@ -16,7 +16,7 @@ class GmapsGeocodingTest < Test::Unit::TestCase
     assert_equal true, config.valid?
   end
 
-   def test_config_latlng_set
+  def test_config_latlng_set
     config = GmapsGeocoding::Config.new({latlng: '40.714224,-73.961452'})
     assert_not_nil config
     assert_equal true, config.valid?
@@ -43,7 +43,7 @@ class GmapsGeocodingTest < Test::Unit::TestCase
     assert_kind_of Hash, result_location
     assert_include result_location, 'results'
 
-    result_latlng =  api.get_finest_latlng(result_location['results'])
+    result_latlng = api.get_finest_latlng(result_location['results'])
     assert_not_nil result_latlng
     assert_instance_of Array, result_latlng
   end
@@ -58,7 +58,7 @@ class GmapsGeocodingTest < Test::Unit::TestCase
     assert_kind_of Hash, result_location
     assert_include result_location, 'result'
 
-    result_latlng =  api.get_finest_latlng(result_location['result'])
+    result_latlng = api.get_finest_latlng(result_location['result'])
     assert_not_nil result_latlng
     assert_instance_of Array, result_latlng
   end

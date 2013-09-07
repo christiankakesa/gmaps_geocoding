@@ -31,7 +31,7 @@ end
 
 desc 'Generate documentation'
 YARD::Rake::YardocTask.new do |t|
-  t.files   = ['lib/**/*.rb', '-', 'LICENSE.txt']
+  t.files = ['lib/**/*.rb', '-', 'LICENSE.txt']
   t.options = ['--main', 'README.md', '--no-private']
 end
 

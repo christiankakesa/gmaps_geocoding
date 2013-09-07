@@ -4,21 +4,21 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'gmaps_geocoding/version'
 
 Gem::Specification.new do |s|
-  s.name          = 'gmaps_geocoding'
-  s.version       = GmapsGeocoding::VERSION
-  s.authors       = ['Christian Kakesa']
-  s.email         = ['christian.kakesa@gmail.com']
-  s.description   = %q{
+  s.name = 'gmaps_geocoding'
+  s.version = GmapsGeocoding::VERSION
+  s.authors = ['Christian Kakesa']
+  s.email = ['christian.kakesa@gmail.com']
+  s.description = %q{
     A simple Ruby gem for Google Maps Geocoding API.
     This gem return a Ruby Hash object of the result.
   }
-  s.summary       = %q{Use Google Geocoding API from Ruby.}
-  s.homepage      = 'https://github.com/fenicks/gmaps_geocoding'
-  s.license       = 'MIT'
+  s.summary = %q{Use Google Geocoding API from Ruby.}
+  s.homepage = 'https://github.com/fenicks/gmaps_geocoding'
+  s.license = 'MIT'
 
-  s.files         = `git ls-files`.split($/)
-  s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
+  s.files = `git ls-files`.split($/)
+  s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  s.test_files = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'rest-client', '~> 1.6.7'

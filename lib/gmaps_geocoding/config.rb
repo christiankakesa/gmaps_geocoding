@@ -5,15 +5,15 @@ module GmapsGeocoding
   class Config
     def initialize(opts = {})
       @options = {url: 'https://maps.googleapis.com/maps/api/geocode'}
-      @options[:output]     = ENV['GOOGLE_MAPS_GEOCODING_OUTPUT']     || opts[:output]     || 'json'
-      @options[:address]    = ENV['GOOGLE_MAPS_GEOCODING_ADDRESS']    || opts[:address]    || ''
-      @options[:latlng]     = ENV['GOOGLE_MAPS_GEOCODING_LATLNG']     || opts[:latlng]     || ''
+      @options[:output] = ENV['GOOGLE_MAPS_GEOCODING_OUTPUT'] || opts[:output] || 'json'
+      @options[:address] = ENV['GOOGLE_MAPS_GEOCODING_ADDRESS'] || opts[:address] || ''
+      @options[:latlng] = ENV['GOOGLE_MAPS_GEOCODING_LATLNG'] || opts[:latlng] || ''
       @options[:components] = ENV['GOOGLE_MAPS_GEOCODING_COMPONENTS'] || opts[:components] || ''
-      @options[:sensor]     = ENV['GOOGLE_MAPS_GEOCODING_SENSOR']     || opts[:sensor]     || 'false'
-      @options[:bounds]     = ENV['GOOGLE_MAPS_GEOCODING_BOUNDS']     || opts[:bounds]     || ''
-      @options[:language]   = ENV['GOOGLE_MAPS_GEOCODING_LANGUAGE']   || opts[:language]   || ''
-      @options[:region]     = ENV['GOOGLE_MAPS_GEOCODING_REGION']     || opts[:region]     || ''
-      @options.merge!(opts).reject!{|_, v| v.to_s.length == 0 }
+      @options[:sensor] = ENV['GOOGLE_MAPS_GEOCODING_SENSOR'] || opts[:sensor] || 'false'
+      @options[:bounds] = ENV['GOOGLE_MAPS_GEOCODING_BOUNDS'] || opts[:bounds] || ''
+      @options[:language] = ENV['GOOGLE_MAPS_GEOCODING_LANGUAGE'] || opts[:language] || ''
+      @options[:region] = ENV['GOOGLE_MAPS_GEOCODING_REGION'] || opts[:region] || ''
+      @options.merge!(opts).reject! { |_, v| v.to_s.length == 0 }
     end
 
     # URL of the Google Maps Geocoding Service
@@ -46,6 +46,7 @@ module GmapsGeocoding
     def latlng
       @options[:latlng]
     end
+
     # A component filter for which you wish to obtain a geocode
     #
     # {https://developers.google.com/maps/documentation/geocoding/#ComponentFiltering}

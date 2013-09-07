@@ -68,9 +68,14 @@ module GmapsGeocoding
     def get_finest_latlng(data_result)
       tmp_result = {}
       data = data_result
-      data.each do |d|
-        tmp_result["#{d['geometry']['location_type']}"] = {lng: d['geometry']['location']['lng'].to_f,
-                                                       lat: d['geometry']['location']['lat'].to_f}
+      if data.kind_of?(Array)
+        data.each do |d|
+          tmp_result["#{d['geometry']['location_type']}"] = {lng: d['geometry']['location']['lng'].to_f,
+                                                             lat: d['geometry']['location']['lat'].to_f}
+        end
+      else
+        tmp_result["#{data['geometry']['location_type']}"] = {lng: data['geometry']['location']['lng'].to_f,
+                                                              lat: data['geometry']['location']['lat'].to_f}
       end
       if tmp_result.include?('ROOFTOP')
         [tmp_result['ROOFTOP'][:lng], tmp_result['ROOFTOP'][:lat]]
@@ -86,13 +91,13 @@ module GmapsGeocoding
     private
     def build_url_query
       query = {}
-      query[:address]    = @config.address    if @config.address
-      query[:latlng]     = @config.latlng     if @config.latlng
+      query[:address] = @config.address if @config.address
+      query[:latlng] = @config.latlng if @config.latlng
       query[:components] = @config.components if @config.components
-      query[:sensor]     = @config.sensor     if @config.sensor
-      query[:bounds]     = @config.bounds     if @config.bounds
-      query[:language]   = @config.language   if @config.language
-      query[:region]     = @config.region     if @config.region
+      query[:sensor] = @config.sensor if @config.sensor
+      query[:bounds] = @config.bounds if @config.bounds
+      query[:language] = @config.language if @config.language
+      query[:region] = @config.region if @config.region
       url = "#{@config.url}/#{@config.output}"
       {url: url, query: query}
     end
