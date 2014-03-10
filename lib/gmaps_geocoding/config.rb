@@ -120,7 +120,7 @@ module GmapsGeocoding
     #
     # According to the specifications: {https://developers.google.com/maps/documentation/geocoding/#GeocodingResponses}
     def is_output_param_valid?
-      ['json', 'xml'].include?(output)
+      %w(json xml).include?(output)
     end
   end
 end
