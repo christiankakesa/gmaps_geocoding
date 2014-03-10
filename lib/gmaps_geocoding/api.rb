@@ -11,7 +11,7 @@ module GmapsGeocoding
     attr_reader :config
 
     def initialize(opts = {})
-      @config = Config.new(opts)
+      @config = GmapsGeocoding::Config.new(opts)
     end
 
     # Return a Ruby Hash object of the Google Maps Geocoding Service response
@@ -104,7 +104,7 @@ module GmapsGeocoding
 
     def retrieve_geocoding_data
       require 'rest-client'
-      data = build_url_query()
+      data = build_url_query
       RestClient.get data[:url], params: data[:query]
     end
   end
@@ -117,7 +117,7 @@ module GmapsGeocoding
 
     def from_xml(xml)
       require 'nori'
-      result = Nori.new(parser: :nokogiri).parse(xml)
+      result = Nori.new.parse(xml)
       if result.include?('GeocodeResponse')
         result['GeocodeResponse']
       else
