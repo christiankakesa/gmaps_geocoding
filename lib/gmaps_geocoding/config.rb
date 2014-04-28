@@ -4,7 +4,7 @@ module GmapsGeocoding
   # Configuration class for GmapsGeocoding API.
   class Config
     def initialize(opts = {})
-      @options = {url: 'https://maps.googleapis.com/maps/api/geocode'}
+      @options = { url: 'https://maps.googleapis.com/maps/api/geocode' }
       @options[:output] = ENV['GOOGLE_MAPS_GEOCODING_OUTPUT'] || opts[:output] || 'json'
       @options[:address] = ENV['GOOGLE_MAPS_GEOCODING_ADDRESS'] || opts[:address] || ''
       @options[:latlng] = ENV['GOOGLE_MAPS_GEOCODING_LATLNG'] || opts[:latlng] || ''

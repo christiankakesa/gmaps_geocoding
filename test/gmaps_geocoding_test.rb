@@ -12,30 +12,30 @@ class GmapsGeocodingTest < Test::Unit::TestCase
   end
 
   def test_config_address_set
-    config = GmapsGeocoding::Config.new({address: 'Tour Eiffel, IDF, Paris, France'})
+    config = GmapsGeocoding::Config.new({ address: 'Tour Eiffel, IDF, Paris, France' })
     assert_not_nil config
     assert_equal true, config.valid?
   end
 
   def test_config_latlng_set
-    config = GmapsGeocoding::Config.new({latlng: '40.714224,-73.961452'})
+    config = GmapsGeocoding::Config.new({ latlng: '40.714224,-73.961452' })
     assert_not_nil config
     assert_equal true, config.valid?
   end
 
   def test_config_address_latlng_set
-    config = GmapsGeocoding::Config.new({address: 'Tour Eiffel, IDF, Paris, France', latlng: '40.714224,-73.961452'})
+    config = GmapsGeocoding::Config.new({ address: 'Tour Eiffel, IDF, Paris, France', latlng: '40.714224,-73.961452' })
     assert_not_nil config
     assert_equal false, config.valid?
   end
 
   def test_config_url
-    config = GmapsGeocoding::Config.new({url: 'http://fakeurl.com'})
+    config = GmapsGeocoding::Config.new({ url: 'http://fakeurl.com' })
     assert_equal 'http://fakeurl.com', config.url
   end
 
   def test_api_json_set
-    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'json'}
+    opts = { address: 'Tour Eiffel, Paris, IDF, France', output: 'json' }
     api = GmapsGeocoding::Api.new(opts)
     assert_not_nil api
 
@@ -50,7 +50,7 @@ class GmapsGeocodingTest < Test::Unit::TestCase
   end
 
   def test_api_xml_set
-    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'xml'}
+    opts = { address: 'Tour Eiffel, Paris, IDF, France', output: 'xml' }
     api = GmapsGeocoding::Api.new(opts)
     assert_not_nil api
 

@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'logger'
 
 module GmapsGeocoding
   # Google Maps Geocoding Service abstraction class
@@ -11,6 +12,10 @@ module GmapsGeocoding
     attr_reader :config
 
     def initialize(opts = {})
+      @logger = opts.delete(:logger)||Logger.new(STDERR) do |l|
+        l.progname = 'gmaps_geocoding'
+        l.level = $DEBUG ? Logger::DEBUG : Logger::INFO
+      end
       @config = GmapsGeocoding::Config.new(opts)
     end
 
@@ -33,15 +38,15 @@ module GmapsGeocoding
         if @config.valid?
           rest_client = retrieve_geocoding_data
           result = case @config.is_json_format?
-                     when true
-                       GmapsGeocoding.from_json(rest_client.to_s)
-                     else
-                       GmapsGeocoding.from_xml(rest_client.to_s)
+                   when true
+                     GmapsGeocoding.from_json(rest_client.to_s)
+                   else
+                     GmapsGeocoding.from_xml(rest_client.to_s)
                    end
           return result
         end
       rescue => e
-        puts "[error: gmaps_geocoding]: #{e}"
+        @logger.debug "[error: gmaps_geocoding]: #{e}"
       end
       nil
     end
@@ -70,12 +75,12 @@ module GmapsGeocoding
       data = data_result
       if data.kind_of?(Array)
         data.each do |d|
-          tmp_result["#{d['geometry']['location_type']}"] = {lng: d['geometry']['location']['lng'].to_f,
-                                                             lat: d['geometry']['location']['lat'].to_f}
+          tmp_result["#{d['geometry']['location_type']}"] = { lng: d['geometry']['location']['lng'].to_f,
+                                                              lat: d['geometry']['location']['lat'].to_f }
         end
       else
-        tmp_result["#{data['geometry']['location_type']}"] = {lng: data['geometry']['location']['lng'].to_f,
-                                                              lat: data['geometry']['location']['lat'].to_f}
+        tmp_result["#{data['geometry']['location_type']}"] = { lng: data['geometry']['location']['lng'].to_f,
+                                                               lat: data['geometry']['location']['lat'].to_f }
       end
       if tmp_result.include?('ROOFTOP')
         [tmp_result['ROOFTOP'][:lng], tmp_result['ROOFTOP'][:lat]]
@@ -99,7 +104,7 @@ module GmapsGeocoding
       query[:language] = @config.language if @config.language
       query[:region] = @config.region if @config.region
       url = "#{@config.url}/#{@config.output}"
-      {url: url, query: query}
+      { url: url, query: query }
     end
 
     def retrieve_geocoding_data
@@ -121,7 +126,7 @@ module GmapsGeocoding
       if result.include?('GeocodeResponse')
         result['GeocodeResponse']
       else
-        {status: 'UNKNOWN_ERROR'}
+        { status: 'UNKNOWN_ERROR' }
       end
     end
   end
