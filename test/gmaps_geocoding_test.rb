@@ -3,6 +3,7 @@ require 'test/unit'
 require_relative 'test_helper'
 require 'gmaps_geocoding'
 
+# Main test class
 class GmapsGeocodingTest < Test::Unit::TestCase
   def test_config_default
     config = GmapsGeocoding::Config.new
