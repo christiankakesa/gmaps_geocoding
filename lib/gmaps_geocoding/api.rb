@@ -46,7 +46,7 @@ module GmapsGeocoding
           return result
         end
       rescue => e
-        @logger.debug "[error: gmaps_geocoding]: #{e}"
+        @logger.error e.to_s
       end
       nil
     end
