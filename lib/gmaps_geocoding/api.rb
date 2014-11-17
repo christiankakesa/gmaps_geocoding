@@ -1,5 +1,8 @@
 # encoding: utf-8
 require 'logger'
+require 'rest-client'
+require 'yajl/json_gem'
+require 'nori'
 
 module GmapsGeocoding
   # Google Maps Geocoding Service abstraction class
@@ -12,9 +15,12 @@ module GmapsGeocoding
     attr_reader :config
 
     def initialize(opts = {})
-      @logger = opts.delete(:logger)||Logger.new(STDERR) do |l|
-        l.progname = 'gmaps_geocoding'
-        l.level = $DEBUG ? Logger::DEBUG : Logger::INFO
+      @logger = opts.delete(:logger)
+      unless @logger
+        @logger = Logger.new(STDERR) do |l|
+          l.progname = 'gmaps_geocoding'
+          l.level = $DEBUG ? Logger::DEBUG : Logger::INFO
+        end
       end
       @config = GmapsGeocoding::Config.new(opts)
     end
@@ -108,7 +114,6 @@ module GmapsGeocoding
     end
 
     def retrieve_geocoding_data
-      require 'rest-client'
       data = build_url_query
       RestClient.get data[:url], params: data[:query]
     end
@@ -116,12 +121,10 @@ module GmapsGeocoding
 
   class << self
     def from_json(json)
-      require 'yajl/json_gem'
       Yajl::Parser.parse(json)
     end
 
     def from_xml(xml)
-      require 'nori'
       result = Nori.new.parse(xml)
       if result.include?('GeocodeResponse')
         result['GeocodeResponse']
