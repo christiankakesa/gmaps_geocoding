@@ -13,7 +13,7 @@ module GmapsGeocoding
       @options[:bounds] = ENV['GOOGLE_MAPS_GEOCODING_BOUNDS'] || opts[:bounds] || ''
       @options[:language] = ENV['GOOGLE_MAPS_GEOCODING_LANGUAGE'] || opts[:language] || ''
       @options[:region] = ENV['GOOGLE_MAPS_GEOCODING_REGION'] || opts[:region] || ''
-      @options.merge!(opts).reject! { |_, v| v.to_s.length == 0 }
+      @options.merge!(opts).reject! { |_, v| v.length == 0 }
     end
 
     # URL of the Google Maps Geocoding Service
@@ -111,9 +111,9 @@ module GmapsGeocoding
     #
     # According to the specifications: {https://developers.google.com/maps/documentation/geocoding/#GeocodingRequests}
     def is_query_valid?
-      (@options[:address].to_s.length > 0 && @options[:latlng].to_s.length == 0) ||
-          (@options[:address].to_s.length == 0 && @options[:latlng].to_s.length > 0) ||
-          (@options[:components].to_s.length > 0)
+      (@options.include?(:address) && !@options.include?(:latlng)) ||
+          (!@options.include?(:address) && @options.include?(:latlng)) ||
+          @options.include?(:components)
     end
 
     # Check if the output format is valid
