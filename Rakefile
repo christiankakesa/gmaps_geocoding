@@ -20,7 +20,7 @@ task release: :build do
   system "git tag -a v#{GmapsGeocoding::VERSION} -m 'Tagging #{GmapsGeocoding::VERSION}'"
   system 'git push --tags'
   system "gem push gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
-  # system "rm gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
+  system "rm gmaps_geocoding-#{GmapsGeocoding::VERSION}.gem"
 end
 
 Rake::TestTask.new do |t|
