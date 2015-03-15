@@ -1,3 +1,4 @@
+# Gmaps geocoding module
 module GmapsGeocoding
   # Configuration class for GmapsGeocoding API.
   class Config
@@ -87,37 +88,38 @@ module GmapsGeocoding
     #
     # @return [true, false] Return _true_ or _false_
     def valid?
-      is_query_valid? && is_output_param_valid?
+      query_valid? && output_param_valid?
     end
 
     # Check if the output format of the query is set to _json_
     #
     # @return [true, false] Return _true_ or _false_
-    def is_json_format?
+    def json_format?
       'json'.eql?(output)
     end
 
     # Check if the output format of the query is set to _xml_
     #
     # @return [true, false] Return _true_ or _false_
-    def is_xml_format?
+    def xml_format?
       'xml'.eql?(output)
     end
 
     private
+
     # Check if the query is valid
     #
     # According to the specifications: {https://developers.google.com/maps/documentation/geocoding/#GeocodingRequests}
-    def is_query_valid?
+    def query_valid?
       (@options.include?(:address) && !@options.include?(:latlng)) ||
-          (!@options.include?(:address) && @options.include?(:latlng)) ||
-          @options.include?(:components)
+        (!@options.include?(:address) && @options.include?(:latlng)) ||
+        @options.include?(:components)
     end
 
     # Check if the output format is valid
     #
     # According to the specifications: {https://developers.google.com/maps/documentation/geocoding/#GeocodingResponses}
-    def is_output_param_valid?
+    def output_param_valid?
       %w(json xml).include?(output)
     end
   end

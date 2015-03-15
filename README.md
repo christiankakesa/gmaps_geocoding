@@ -37,27 +37,31 @@ All options could be overriden with corresponding environment variable:
 
     opts = {address: 'Tour Eiffel, Paris, IDF, France'}
     api = GmapsGeocoding::Api.new(opts)
-    data = api.get_location
-    loc = api.get_finest_latlng(data['results']) if data.include?('status') && data['status'].eql?('OK')
+    data = api.location
+    loc = api.finest_latlng(data['results']) if data.include?('status') && data['status'].eql?('OK')
 
 _Return a location array_
 
 * `loc[0] is the longitude float value`
 * `loc[1] is the latitude float value`
 
-`get_finest_latlng` retrieve the best address in this order:
+`finest_latlng` retrieve the best address in this order:
 
 * _ROOFTOP_
 * _RANGE_INTERPOLATED_
 * _GEOMETRIC_CENTER_
 * _APPROXIMATE_
 
-### JSON example
+### JSON and XML examples
 
-    # json output example
-    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'json'}
-    api = GmapsGeocoding::Api.new(opts)
-    result = api.get_location
+| JSON example                                                           | XML example                                                           |
+|------------------------------------------------------------------------|-----------------------------------------------------------------------|
+|    # json output example                                               |    # xml output example                                               |
+|    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'json'} |    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'xml'} |
+|    api = GmapsGeocoding::Api.new(opts)                                 |    api = GmapsGeocoding::Api.new(opts)                                |
+|    result = api.location                                               |    result = api.location                                              |
+
+# Outputs
 
 **Ruby Hash object from json output**
 
@@ -145,13 +149,6 @@ _Return a location array_
                 "southwest"=>{"lat"=>48.8559200197085, "lng"=>2.289669019708498}}},
             "types"=>[]}],
          "status"=>"OK"}
-
-### XML example
-
-    # xml output example
-    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'xml'}
-    api = GmapsGeocoding::Api.new(opts)
-    result = api.get_location
 
 **Ruby Hash object from xml output**
 

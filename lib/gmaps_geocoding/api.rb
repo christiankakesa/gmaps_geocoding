@@ -3,6 +3,7 @@ require 'rest-client'
 require 'yajl/json_gem'
 require 'nori'
 
+# Gmaps geocoding module
 module GmapsGeocoding
   # Google Maps Geocoding Service abstraction class
   #
@@ -32,17 +33,17 @@ module GmapsGeocoding
     #  # json output example
     #  opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'json'}
     #  api = GmapsGeocoding::Api.new(opts)
-    #  result = api.get_location
+    #  result = api.location
     #  # xml output example
     #  opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'xml'}
     #  api = GmapsGeocoding::Api.new(opts)
-    #  result = api.get_location
+    #  result = api.location
     #
-    def get_location
+    def location
       begin
         if @config.valid?
           rest_client = retrieve_geocoding_data
-          result = case @config.is_json_format?
+          result = case @config.json_format?
                    when true
                      GmapsGeocoding.from_json(rest_client.to_s)
                    else
@@ -68,17 +69,17 @@ module GmapsGeocoding
     #  # json output example
     #  opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'json'}
     #  api = GmapsGeocoding::Api.new(opts)
-    #  data = api.get_location
+    #  data = api.location
     #  if data.include?('status') && data['status'].eql?('OK') # or more simple : if data.include?('results')
     #    return get_finest_latlng(data['results']) # output : [2.291018, 48.857269]
     #  end
     #
-    # @param data_result [Array] The json#results or xml#result array from {#get_location} method
+    # @param data_result [Array] The json#results or xml#result array from {#location} method
     # @return [Array] array contains latitude and longitude of the location
     def get_finest_latlng(data_result)
       tmp_result = {}
       data = data_result
-      if data.kind_of?(Array)
+      if data.is_a?(Array)
         data.each do |d|
           tmp_result["#{d['geometry']['location_type']}"] = { lng: d['geometry']['location']['lng'].to_f,
                                                               lat: d['geometry']['location']['lat'].to_f }
@@ -99,6 +100,7 @@ module GmapsGeocoding
     end
 
     private
+
     def build_url_query
       query = {}
       query[:address] = @config.address if @config.address

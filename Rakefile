@@ -2,9 +2,7 @@ require 'bundler/gem_tasks'
 require 'rake/testtask'
 require 'yard'
 
-lib = File.expand_path('../lib/', __FILE__)
-$:.unshift lib unless $:.include?(lib)
-require('gmaps_geocoding/version')
+require_relative 'lib/gmaps_geocoding/version'
 
 task gem: :build
 task :build do
