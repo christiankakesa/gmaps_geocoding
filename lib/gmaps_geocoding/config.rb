@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module GmapsGeocoding
   # Configuration class for GmapsGeocoding API.
   class Config

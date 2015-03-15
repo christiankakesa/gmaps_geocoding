@@ -1,4 +1,3 @@
-# encoding: utf-8
 require 'logger'
 require 'rest-client'
 require 'yajl/json_gem'
