@@ -1,9 +1,7 @@
 require 'simplecov'
 
+SimpleCov.formatters = [SimpleCov::Formatter::HTMLFormatter]
+
 SimpleCov.start do
-  add_filter 'coverage'
-  add_filter 'doc'
-  add_filter 'pkg'
-  add_filter 'test'
+  add_filter '/test/'
 end
-SimpleCov.command_name 'Unit Tests'
