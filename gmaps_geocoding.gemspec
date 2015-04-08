@@ -16,13 +16,13 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
 
   s.files = `git ls-files`.split($RS)
-  s.executables = s.files.grep(/^bin\//) { |f| File.basename(f) }
-  s.test_files = s.files.grep(/^(test|spec|features)\//)
+  s.executables = s.files.grep(%r{^bin\/}) { |f| File.basename(f) }
+  s.test_files = s.files.grep(%r{^(test|spec|features)\/})
   s.require_paths = ['lib']
 
-  s.add_runtime_dependency 'rest-client', '~> 1.7.3'
+  s.add_runtime_dependency 'rest-client', '~> 1.8.0'
   s.add_runtime_dependency 'yajl-ruby', '~> 1.2.1'
-  s.add_runtime_dependency 'nori', '~> 2.4.0'
+  s.add_runtime_dependency 'nori', '~> 2.5.0'
   s.add_runtime_dependency 'nokogiri', '~> 1.6.6'
   s.add_development_dependency 'bundler', '>= 1.8.4'
   s.add_development_dependency 'rake'

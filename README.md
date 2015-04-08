@@ -52,16 +52,21 @@ _Return a location array_
 * _GEOMETRIC_CENTER_
 * _APPROXIMATE_
 
-### JSON and XML examples
+### JSON example
 
-| JSON example                                                           | XML example                                                           |
-|------------------------------------------------------------------------|-----------------------------------------------------------------------|
-|    # json output example                                               |    # xml output example                                               |
-|    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'json'} |    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'xml'} |
-|    api = GmapsGeocoding::Api.new(opts)                                 |    api = GmapsGeocoding::Api.new(opts)                                |
-|    result = api.location                                               |    result = api.location                                              |
+    # json output example
+    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'json'}
+    api = GmapsGeocoding::Api.new(opts)
+    result = api.location
 
-# Outputs
+### XML example
+
+    # xml output example
+    opts = {address: 'Tour Eiffel, Paris, IDF, France', output: 'xml'}
+    api = GmapsGeocoding::Api.new(opts)
+    result = api.location
+
+# JSON and XML output
 
 **Ruby Hash object from json output**
 

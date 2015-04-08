@@ -1,5 +1,3 @@
-require 'test/unit'
-
 require_relative '../lib/gmaps_geocoding'
 require_relative 'test_helper'
 
@@ -12,10 +10,20 @@ class GmapsGeocodingConfigTest < Test::Unit::TestCase
     assert_equal false, config.valid?
     assert_equal true,  config.json_format?
     assert_equal false, config.xml_format?
+  end
+
+  def test_config_default_address
+    config = GmapsGeocoding::Config.new
+    assert_not_nil config
 
     assert_equal true, config.url.size > 0
     assert_equal 'json', config.output
     assert_nil config.address
+  end
+
+  def test_config_default_optional
+    config = GmapsGeocoding::Config.new
+    assert_not_nil config
     assert_nil config.latlng
     assert_nil config.components
     assert_equal 'false', config.sensor

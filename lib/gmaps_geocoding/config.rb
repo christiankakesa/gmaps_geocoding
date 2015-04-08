@@ -2,17 +2,28 @@
 module GmapsGeocoding
   # Configuration class for GmapsGeocoding API.
   class Config
+    # Configuration valid keys
+    VALID_KEYS = [:url, :output, :address, :latlng, :components, :sensor, :bounds, :language, :region].freeze
+
+    # Default configuration values
+    DEFAULT_CONFIG = {
+      url: 'https://maps.googleapis.com/maps/api/geocode',
+      output: 'json',
+      sensor: 'false'
+    }.freeze
+
     def initialize(opts = {})
-      @options = { url: 'https://maps.googleapis.com/maps/api/geocode' }
-      @options[:output] = ENV['GOOGLE_MAPS_GEOCODING_OUTPUT'] || opts[:output] || 'json'
-      @options[:address] = ENV['GOOGLE_MAPS_GEOCODING_ADDRESS'] || opts[:address] || ''
-      @options[:latlng] = ENV['GOOGLE_MAPS_GEOCODING_LATLNG'] || opts[:latlng] || ''
-      @options[:components] = ENV['GOOGLE_MAPS_GEOCODING_COMPONENTS'] || opts[:components] || ''
-      @options[:sensor] = ENV['GOOGLE_MAPS_GEOCODING_SENSOR'] || opts[:sensor] || 'false'
-      @options[:bounds] = ENV['GOOGLE_MAPS_GEOCODING_BOUNDS'] || opts[:bounds] || ''
-      @options[:language] = ENV['GOOGLE_MAPS_GEOCODING_LANGUAGE'] || opts[:language] || ''
-      @options[:region] = ENV['GOOGLE_MAPS_GEOCODING_REGION'] || opts[:region] || ''
-      @options.merge!(opts).reject! { |_, v| v.length == 0 }
+      @options = {}
+      @options.merge!(DEFAULT_CONFIG)
+      opts.each do |k, _|
+        next unless VALID_KEYS.include?(k)
+        val = if k.eql?(:url)
+                opts.delete(k)
+              else
+                ENV["GOOGLE_MAPS_GEOCODING_#{k.to_s.upcase}"] || opts.delete(k)
+              end
+        @options[k] = val if val
+      end
     end
 
     # URL of the Google Maps Geocoding Service

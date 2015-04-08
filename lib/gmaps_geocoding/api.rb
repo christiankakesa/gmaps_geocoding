@@ -18,7 +18,7 @@ module GmapsGeocoding
       @logger = opts.delete(:logger)
       unless @logger
         @logger = Logger.new(STDERR) do |l|
-          l.progname = 'gmaps_geocoding'
+          l.progname = 'gmaps_geocoding'.freeze
           l.level = $DEBUG ? Logger::DEBUG : Logger::INFO
         end
       end
@@ -45,14 +45,19 @@ module GmapsGeocoding
           rest_client = retrieve_geocoding_data
           result = case @config.json_format?
                    when true
-                     GmapsGeocoding.from_json(rest_client.to_s)
+                     Yajl::Parser.parse(rest_client)
                    else
-                     GmapsGeocoding.from_xml(rest_client.to_s)
+                     r = Nori.new.parse(rest_client)
+                     if r.include?('GeocodeResponse')
+                       r['GeocodeResponse']
+                     else
+                       { status: 'UNKNOWN_ERROR' }
+                     end
                    end
           return result
         end
       rescue => e
-        @logger.error e.to_s
+        @logger.error e
       end
       nil
     end
@@ -71,67 +76,49 @@ module GmapsGeocoding
     #  api = GmapsGeocoding::Api.new(opts)
     #  data = api.location
     #  if data.include?('status') && data['status'].eql?('OK') # or more simple : if data.include?('results')
-    #    return get_finest_latlng(data['results']) # output : [2.291018, 48.857269]
+    #    return finest_latlng(data['results']) # output : [2.291018, 48.857269]
     #  end
     #
-    # @param data_result [Array] The json#results or xml#result array from {#location} method
+    # @param data [Array] The json#results or xml#result array from {#location} method
     # @return [Array] array contains latitude and longitude of the location
-    def get_finest_latlng(data_result)
-      tmp_result = {}
-      data = data_result
-      if data.is_a?(Array)
-        data.each do |d|
-          tmp_result["#{d['geometry']['location_type']}"] = { lng: d['geometry']['location']['lng'].to_f,
-                                                              lat: d['geometry']['location']['lat'].to_f }
-        end
-      else
-        tmp_result["#{data['geometry']['location_type']}"] = { lng: data['geometry']['location']['lng'].to_f,
-                                                               lat: data['geometry']['location']['lat'].to_f }
-      end
-      if tmp_result.include?('ROOFTOP')
-        [tmp_result['ROOFTOP'][:lng], tmp_result['ROOFTOP'][:lat]]
-      elsif tmp_result.include?('RANGE_INTERPOLATED')
-        [tmp_result['RANGE_INTERPOLATED'][:lng], tmp_result['RANGE_INTERPOLATED'][:lat]]
-      elsif tmp_result.include?('GEOMETRIC_CENTER')
-        [tmp_result['GEOMETRIC_CENTER'][:lng], tmp_result['GEOMETRIC_CENTER'][:lat]]
-      else
-        [tmp_result['APPROXIMATE'][:lng], tmp_result['APPROXIMATE'][:lat]]
-      end
+    # rubocop:disable Metrics/AbcSize
+    def finest_latlng(data)
+      result = retrieve_finest_location(data)
+      return [result['ROOFTOP'][:lng], result['ROOFTOP'][:lat]] if result.include?('ROOFTOP')
+      return [result['RANGE_INTERPOLATED'][:lng], result['RANGE_INTERPOLATED'][:lat]] if result.include?('RANGE_INTERPOLATED')
+      return [result['GEOMETRIC_CENTER'][:lng], result['GEOMETRIC_CENTER'][:lat]] if result.include?('GEOMETRIC_CENTER')
+      [result['APPROXIMATE'][:lng], result['APPROXIMATE'][:lat]]
+    rescue
+      [0.0, 0.0]
     end
+    # rubocop:enable Metrics/AbcSize
 
     private
 
+    def retrieve_finest_location(data)
+      result = {}
+      tmp_data = data
+      tmp_data = [tmp_data] unless tmp_data.is_a?(Array)
+      tmp_data.each do |d|
+        result["#{d['geometry']['location_type']}"] = { lng: d['geometry']['location']['lng'].to_f,
+                                                        lat: d['geometry']['location']['lat'].to_f }
+      end
+      result
+    end
+
     def build_url_query
       query = {}
-      query[:address] = @config.address if @config.address
-      query[:latlng] = @config.latlng if @config.latlng
-      query[:components] = @config.components if @config.components
-      query[:sensor] = @config.sensor if @config.sensor
-      query[:bounds] = @config.bounds if @config.bounds
-      query[:language] = @config.language if @config.language
-      query[:region] = @config.region if @config.region
+      [:address, :latlng, :components, :sensor, :bounds, :language, :region].each do |k|
+        val = @config.send(k)
+        query[k] = val if val
+      end
       url = "#{@config.url}/#{@config.output}"
-      { url: url, query: query }
+      { url: url, query: query }.freeze
     end
 
     def retrieve_geocoding_data
       data = build_url_query
       RestClient.get data[:url], params: data[:query]
-    end
-  end
-
-  class << self
-    def from_json(json)
-      Yajl::Parser.parse(json)
-    end
-
-    def from_xml(xml)
-      result = Nori.new.parse(xml)
-      if result.include?('GeocodeResponse')
-        result['GeocodeResponse']
-      else
-        { status: 'UNKNOWN_ERROR' }
-      end
     end
   end
 end

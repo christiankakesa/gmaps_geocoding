@@ -1,4 +1,3 @@
-require 'test/unit'
 
 require_relative '../lib/gmaps_geocoding'
 require_relative 'test_helper'
@@ -15,7 +14,7 @@ class GmapsGeocodingApiTest < Test::Unit::TestCase
     assert_kind_of Hash, result_location
     assert_include result_location, 'results'
 
-    result_latlng = api.get_finest_latlng(result_location['results'])
+    result_latlng = api.finest_latlng(result_location['results'])
     assert_not_nil result_latlng
     assert_instance_of Array, result_latlng
   end
@@ -30,7 +29,7 @@ class GmapsGeocodingApiTest < Test::Unit::TestCase
     assert_kind_of Hash, result_location
     assert_include result_location, 'result'
 
-    result_latlng = api.get_finest_latlng(result_location['result'])
+    result_latlng = api.finest_latlng(result_location['result'])
     assert_not_nil result_latlng
     assert_instance_of Array, result_latlng
   end
