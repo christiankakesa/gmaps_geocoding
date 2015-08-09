@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'yajl-ruby', '~> 1.2.1'
   s.add_runtime_dependency 'nori', '~> 2.5.0'
   s.add_runtime_dependency 'nokogiri', '~> 1.6.6'
-  s.add_development_dependency 'bundler', '>= 1.8.4'
+  s.add_development_dependency 'bundler', '>= 1.7.0'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'yard'
 end
