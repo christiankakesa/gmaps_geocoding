@@ -1,2 +1,4 @@
 --main README.md
 --no-private
+--protected
+- LICENSE.txt
