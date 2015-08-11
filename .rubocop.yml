@@ -9,3 +9,7 @@ Metrics/MethodLength:
   Description: 'Try to avoid methods longer than 50 lines of code.'
   Enabled: true
   Max: 50
+
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
