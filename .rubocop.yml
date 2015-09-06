@@ -1,7 +1,7 @@
 # Reference here: https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml
 
 Metrics/LineLength:
-  Description: 'Limit lines to 310 characters.'
+  Description: 'Limit lines to 120 characters.'
   Enabled: false
   Max: 120
 
