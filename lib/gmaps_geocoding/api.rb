@@ -48,10 +48,10 @@ module GmapsGeocoding
                      Yajl::Parser.parse(rest_client)
                    else
                      r = Nori.new.parse(rest_client)
-                     if r.include?('GeocodeResponse')
+                     if r.include?('GeocodeResponse'.freeze)
                        r['GeocodeResponse']
                      else
-                       { status: 'UNKNOWN_ERROR' }
+                       { status: 'UNKNOWN_ERROR'.freeze }
                      end
                    end
           return result
@@ -84,12 +84,12 @@ module GmapsGeocoding
     # rubocop:disable Metrics/AbcSize
     def finest_latlng(data)
       result = retrieve_finest_location(data)
-      return [result['ROOFTOP'][:lng], result['ROOFTOP'][:lat]] if result.include?('ROOFTOP')
-      return [result['RANGE_INTERPOLATED'][:lng], result['RANGE_INTERPOLATED'][:lat]] if result.include?('RANGE_INTERPOLATED')
-      return [result['GEOMETRIC_CENTER'][:lng], result['GEOMETRIC_CENTER'][:lat]] if result.include?('GEOMETRIC_CENTER')
+      return [result['ROOFTOP'][:lng], result['ROOFTOP'][:lat]] if result.include?('ROOFTOP'.freeze)
+      return [result['RANGE_INTERPOLATED'][:lng], result['RANGE_INTERPOLATED'][:lat]] if result.include?('RANGE_INTERPOLATED'.freeze)
+      return [result['GEOMETRIC_CENTER'][:lng], result['GEOMETRIC_CENTER'][:lat]] if result.include?('GEOMETRIC_CENTER'.freeze)
       [result['APPROXIMATE'][:lng], result['APPROXIMATE'][:lat]]
     rescue
-      [0.0, 0.0]
+      [0.0, 0.0].freeze
     end
     # rubocop:enable Metrics/AbcSize
 
@@ -107,18 +107,17 @@ module GmapsGeocoding
     end
 
     def build_url_query
-      query = {}
-      [:address, :latlng, :components, :sensor, :bounds, :language, :region].each do |k|
+      query_params = {}
+      VALID_QUERY_PARAMS.each do |k|
         val = @config.send(k)
-        query[k] = val if val
+        query_params[k] = val if val
       end
-      url = "#{@config.url}/#{@config.output}"
-      { url: url, query: query }.freeze
+      { url: "#{@config.url}/#{@config.output}", params: query_params }.freeze
     end
 
     def retrieve_geocoding_data
       data = build_url_query
-      RestClient.get data[:url], params: data[:query]
+      RestClient.get data[:url], params: data[:params]
     end
   end
 end

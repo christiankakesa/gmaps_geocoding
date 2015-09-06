@@ -24,14 +24,19 @@ See [Google Maps Geocoding service documentation](https://developers.google.com/
 
 All options could be overriden with corresponding environment variable:
 
-* GOOGLE_MAPS_GEOCODING_OUTPUT
-* GOOGLE_MAPS_GEOCODING_ADDRESS
-* GOOGLE_MAPS_GEOCODING_LATLNG
-* GOOGLE_MAPS_GEOCODING_COMPONENTS
-* GOOGLE_MAPS_GEOCODING_SENSOR
-* GOOGLE_MAPS_GEOCODING_BOUNDS
-* GOOGLE_MAPS_GEOCODING_LANGUAGE
-* GOOGLE_MAPS_GEOCODING_REGION
+* `GOOGLE_MAPS_GEOCODING_URL`: HTTP endpoint to the Google geocoding service by default is set to [https://maps.googleapis.com/maps/api/geocode](https://maps.googleapis.com/maps/api/geocode).
+* `GOOGLE_MAPS_GEOCODING_OUTPUT`: By default is set to `json`
+* `GOOGLE_MAPS_GEOCODING_KEY`
+* `GOOGLE_MAPS_GEOCODING_ADDRESS`
+* `GOOGLE_MAPS_GEOCODING_LATLNG`
+* `GOOGLE_MAPS_GEOCODING_COMPONENTS`
+* `GOOGLE_MAPS_GEOCODING_SENSOR`: By default is set to `false`
+* `GOOGLE_MAPS_GEOCODING_BOUNDS`
+* `GOOGLE_MAPS_GEOCODING_LANGUAGE`
+* `GOOGLE_MAPS_GEOCODING_REGION`
+* `GOOGLE_MAPS_GEOCODING_PLACE_ID`
+* `GOOGLE_MAPS_GEOCODING_RESULT_TYPE`
+* `GOOGLE_MAPS_GEOCODING_LOCATION_TYPE`
 
 ### Easy way to use for both JSON and XML format
 
