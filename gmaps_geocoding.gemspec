@@ -24,13 +24,14 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'rest-client', '~> 1.8'
-  s.add_runtime_dependency 'yajl-ruby', '~> 1.2'
-  s.add_runtime_dependency 'nori', '~> 2.5'
-  s.add_runtime_dependency 'nokogiri', '~> 1.6'
+  s.add_runtime_dependency 'oj', '>=  2.12.13'
+  s.add_runtime_dependency 'oj_mimic_json'
+  s.add_runtime_dependency 'ox', '>= 2.2.1'
   s.add_development_dependency 'bundler', '~> 1.7', '>= 1.7.0'
   s.add_development_dependency 'rake', '~> 0'
   s.add_development_dependency 'yard', '~> 0'
   s.add_development_dependency 'simplecov', '~> 0'
   s.add_development_dependency 'test-unit', '~> 3.0'
   s.add_development_dependency 'rubocop', '~> 0'
+  s.add_development_dependency 'coveralls', '~> 0'
 end
