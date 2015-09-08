@@ -1,7 +1,7 @@
 require 'logger'
+require 'ox'
+require 'oj'
 require 'rest-client'
-require 'yajl/json_gem'
-require 'nori'
 
 # Gmaps geocoding module
 module GmapsGeocoding
@@ -23,6 +23,7 @@ module GmapsGeocoding
         end
       end
       @config = GmapsGeocoding::Config.new(opts)
+      Oj.default_options = Oj.default_options.merge(bigdecimal_load: :float, float_precision: 7)
     end
 
     # Return a Ruby Hash object of the Google Maps Geocoding Service response
@@ -40,25 +41,19 @@ module GmapsGeocoding
     #  result = api.location
     #
     def location
-      begin
-        if @config.valid?
-          rest_client = retrieve_geocoding_data
-          result = case @config.json_format?
-                   when true
-                     Yajl::Parser.parse(rest_client)
-                   else
-                     r = Nori.new.parse(rest_client)
-                     if r.include?('GeocodeResponse'.freeze)
-                       r['GeocodeResponse']
-                     else
-                       { status: 'UNKNOWN_ERROR'.freeze }
-                     end
-                   end
-          return result
+      if @config.valid?
+        rest_client = retrieve_geocoding_data
+        case @config.json_format?
+        when true
+          json_to_hash(rest_client)
+        else
+          xml_to_hash(rest_client)
         end
-      rescue => e
-        @logger.error e
+      else
+        fail 'Invalid configuration parameters check the Google Geocoding API documentation'.freeze
       end
+    rescue => e
+      @logger.error e
       nil
     end
 
@@ -119,5 +114,53 @@ module GmapsGeocoding
       data = build_url_query
       RestClient.get data[:url], params: data[:params]
     end
+
+    def json_to_hash(json_str)
+      Oj.load(json_str)
+    end
+
+    def xml_to_hash(xml_str)
+      xml = Ox.parse(xml_str)
+      r = xml_node_to_ruby(xml)
+      if r.include?('GeocodeResponse'.freeze)
+        r['GeocodeResponse']
+      else
+        { status: 'UNKNOWN_ERROR'.freeze }
+      end
+    end
+
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
+    def xml_node_to_ruby(ox)
+      return unless ox.respond_to?(:nodes)
+      result = {}
+      ox.nodes.each do |d|
+        next unless d.respond_to?(:nodes)
+        if d.nodes[0].is_a?(Ox::Element)
+          if result.include?(d.value)
+            unless result[d.value].is_a?(Array)
+              result[d.value] = [result[d.value]]
+            end
+            result[d.value] << xml_node_to_ruby(d)
+          else
+            result[d.value] = xml_node_to_ruby(d)
+          end
+        else
+          if result.include?(d.value)
+            unless result[d.value].is_a?(Array)
+              result[d.value] = [result[d.value]]
+            end
+            result[d.value] << d.nodes[0]
+          else
+            result[d.value] = d.nodes[0]
+          end
+        end
+      end
+      result
+    end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
   end
 end
