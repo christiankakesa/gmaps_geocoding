@@ -1,4 +1,4 @@
-# GmapsGeocoding
+# GmapsGeocoding [![Gem Version](https://badge.fury.io/rb/gmaps_geocoding.svg)](http://badge.fury.io/rb/gmaps_geocoding) [![Build Status](https://travis-ci.org/fenicks/gmaps_geocoding.svg?branch=master)](https://travis-ci.org/fenicks/gmaps_geocoding) [![Coverage Status](https://coveralls.io/repos/fenicks/gmaps_geocoding/badge.svg?branch=master&service=github)](https://coveralls.io/github/fenicks/gmaps_geocoding?branch=master)
 
 A simple Ruby gem for Google Maps Geocoding API.
 This gem return a Ruby Hash object of the result.
