@@ -41,16 +41,13 @@ module GmapsGeocoding
     #  result = api.location
     #
     def location
-      if @config.valid?
-        rest_client = retrieve_geocoding_data
-        case @config.json_format?
-        when true
-          json_to_hash(rest_client)
-        else
-          xml_to_hash(rest_client)
-        end
+      fail 'Invalid configuration parameters check the Google Geocoding API documentation'.freeze unless @config.valid?
+      rest_client = retrieve_geocoding_data
+      case @config.json_format?
+      when true
+        json_to_hash(rest_client)
       else
-        fail 'Invalid configuration parameters check the Google Geocoding API documentation'.freeze
+        xml_to_hash(rest_client)
       end
     rescue => e
       @logger.error e
@@ -95,8 +92,8 @@ module GmapsGeocoding
       tmp_data = data
       tmp_data = [tmp_data] unless tmp_data.is_a?(Array)
       tmp_data.each do |d|
-        result["#{d['geometry']['location_type']}"] = { lng: d['geometry']['location']['lng'].to_f,
-                                                        lat: d['geometry']['location']['lat'].to_f }
+        result[d['geometry']['location_type']] = { lng: d['geometry']['location']['lng'].to_f,
+                                                   lat: d['geometry']['location']['lat'].to_f }
       end
       result
     end
@@ -146,15 +143,13 @@ module GmapsGeocoding
           else
             result[d.value] = xml_node_to_ruby(d)
           end
-        else
-          if result.include?(d.value)
-            unless result[d.value].is_a?(Array)
-              result[d.value] = [result[d.value]]
-            end
-            result[d.value] << d.nodes[0]
-          else
-            result[d.value] = d.nodes[0]
+        elsif result.include?(d.value)
+          unless result[d.value].is_a?(Array)
+            result[d.value] = [result[d.value]]
           end
+          result[d.value] << d.nodes[0]
+        else
+          result[d.value] = d.nodes[0]
         end
       end
       result
