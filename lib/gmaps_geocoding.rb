@@ -1,3 +1,3 @@
-require 'gmaps_geocoding/api'
-require 'gmaps_geocoding/config'
-require 'gmaps_geocoding/version'
+require_relative 'gmaps_geocoding/api'
+require_relative 'gmaps_geocoding/config'
+require_relative 'gmaps_geocoding/version'
