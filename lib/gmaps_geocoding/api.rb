@@ -136,17 +136,13 @@ module GmapsGeocoding
         next unless d.respond_to?(:nodes)
         if d.nodes[0].is_a?(Ox::Element)
           if result.include?(d.value)
-            unless result[d.value].is_a?(Array)
-              result[d.value] = [result[d.value]]
-            end
+            result[d.value] = [result[d.value]] unless result[d.value].is_a?(Array)
             result[d.value] << xml_node_to_ruby(d)
           else
             result[d.value] = xml_node_to_ruby(d)
           end
         elsif result.include?(d.value)
-          unless result[d.value].is_a?(Array)
-            result[d.value] = [result[d.value]]
-          end
+          result[d.value] = [result[d.value]] unless result[d.value].is_a?(Array)
           result[d.value] << d.nodes[0]
         else
           result[d.value] = d.nodes[0]
