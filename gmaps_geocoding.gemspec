@@ -23,11 +23,13 @@ Gem::Specification.new do |s|
   s.test_files = s.files.grep(%r{^(test|spec|features)\/})
   s.require_paths = ['lib']
 
-  s.add_runtime_dependency 'rest-client', '~> 1.8'
-  s.add_runtime_dependency 'oj', '>=  2.12.13'
-  s.add_runtime_dependency 'oj_mimic_json'
-  s.add_runtime_dependency 'ox', '>= 2.2.1'
-  s.add_development_dependency 'bundler', '~> 1.7', '>= 1.7.0'
+  s.add_runtime_dependency 'rest-client', '~> 2.0', '>= 2.0.0'
+  s.add_runtime_dependency 'oj', '~> 2.18', '>= 2.18.0'
+  s.add_runtime_dependency 'oj_mimic_json', '~> 1.0', '>= 1.0.1'
+  s.add_runtime_dependency 'ox', '~> 2.4', '>= 2.4.7'
+  s.add_runtime_dependency 'json', '~> 2.0', '>= 2.0.2'
+  s.add_runtime_dependency 'rainbow', '~> 2.1.0'
+  s.add_development_dependency 'bundler', '~> 1.13', '>= 1.13.7'
   s.add_development_dependency 'rake', '~> 0'
   s.add_development_dependency 'yard', '~> 0'
   s.add_development_dependency 'simplecov', '~> 0'
