@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'rest-client', '~> 2.0', '>= 2.0.0'
-  s.add_runtime_dependency 'oj', '~> 2.18', '>= 2.18.0'
+  s.add_runtime_dependency 'oj', '< 4', '>= 2.18.0'
   s.add_runtime_dependency 'oj_mimic_json', '~> 1.0', '>= 1.0.1'
   s.add_runtime_dependency 'ox', '~> 2.4', '>= 2.4.7'
   s.add_runtime_dependency 'json', '~> 2.0', '>= 2.0.2'
