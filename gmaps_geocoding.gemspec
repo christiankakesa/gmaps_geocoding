@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = ['christian.kakesa@gmail.com']
   s.description = <<-END
     A simple Ruby gem for Google Maps Geocoding API.
-    This gem return a Ruby Hash object of the result.
+    This gem returns a Ruby Hash object of the result.
   END
   s.summary = 'Use Google Geocoding API from Ruby.'
   s.homepage = 'https://github.com/fenicks/gmaps_geocoding'
